@@ -88,31 +88,6 @@ Client → API Gateway → Lambda Function → SageMaker Endpoint
 - **Format** : JSON
 - **Status** : On demand 
 
-## Project Structure
-
-```
-Bankruptcy-prediction/
-├── models/                                # ML models and artifacts
-│   ├── MLPClassifier_optimized.pkl        # Optimized MLPClassifier model
-│   ├── scaler_optimized.pkl               # StandardScaler for normalization
-│   └── selected_features_optimized.pkl    # Selected features (50)
-├── data.csv                               # Training dataset (Taiwanese companies)
-├── Python_for_data_analysis_project.ipynb # Analysis and improvement notebook
-├── train_model.py                         # Model training script
-├── deploy.py                              # SageMaker deployment script
-├── inference.py                           # SageMaker inference script
-├── lambda_function.py                     # Lambda code for REST API
-├── deploy_lambda_api.py                   # Lambda + API Gateway deployment script
-├── test_lambda_api.py                     # REST API test suite
-├── manage_project.py                      # Project manager (pause/resume/status)
-├── config.py                              # AWS configuration (local)
-├── config_example.py                      # Configuration example
-├── requirements.txt                       # Python dependencies
-├── s3-policy.json                         # S3 policy for permissions
-├── optimized_compatible_model.tar.gz      # Model archive for SageMaker
-├── .gitignore                             # Files to ignore by Git
-└── README.md                              # Project documentation
-```
 
 ## Usage
 
@@ -193,9 +168,9 @@ print(result)
 ## Performance and Results
 
 ### Model Metrics
-- **ROC-AUC Score** : 0.9936
-- **Accuracy** : 0.981
-- **Precision** : 0.973
+- **ROC-AUC Score** : 0.92
+- **Accuracy** : 0.93
+- **Precision** : 0.91
 - **Training time** : 2-3 minutes (local)
 - **Features used** : 50 (selected by SelectKBest)
 - **API response time** : < 0.2 seconds
