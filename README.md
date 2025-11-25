@@ -1,6 +1,6 @@
 # Bankruptcy Prediction Model - AWS SageMaker Deployment
 
-Multi-Layer Perceptron Classifier model for Taiwanese company bankruptcy prediction deployed on AWS SageMaker (eu-west-3) + REST API.
+Multi-Layer Perceptron Classifier model for Taiwanese company bankruptcy prediction deployed on AWS SageMaker + REST API.
 
 
 ## Dataset
@@ -95,11 +95,6 @@ Client → API Gateway → Lambda Function → SageMaker Endpoint
 
 The API is exposed via Lambda + API Gateway for simpler and more secure usage.
 
-#### API Testing
-```bash
-# Test the deployed API
-python3 test_lambda_api.py --api-url https://sv6rnbh9mi.execute-api.eu-west-3.amazonaws.com/prod/predict
-```
 
 #### Usage with curl
 ```bash
@@ -129,28 +124,6 @@ result = response.json()
 print(result)
 ```
 
-#### Usage Example
-```python
-import boto3
-import json
-
-# Create SageMaker Runtime client
-runtime = boto3.client('sagemaker-runtime', region_name='eu-west-3')
-
-# Input data (50 features)
-data = [0.1] * 50
-
-# Make prediction
-response = runtime.invoke_endpoint(
-    EndpointName='SAGEMAKER_ENDPOINT_NAME',
-    ContentType='application/json',
-    Body=json.dumps(data)
-)
-
-# Read response
-result = json.loads(response['Body'].read().decode())
-print(result)
-```
 
 ### Response Format
 
@@ -173,14 +146,8 @@ print(result)
 - **Precision** : 0.91
 - **Training time** : 2-3 minutes (local)
 - **Features used** : 50 (selected by SelectKBest)
-- **API response time** : < 0.2 seconds
 
 
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
 
 ## Dependencies
 
@@ -201,7 +168,7 @@ pip install -r requirements.txt
 - **S3** : Model artifacts storage
 - **IAM** : Permissions management
 
-## Complete Training and Deployment Pipeline
+## Steps to Complete Training and Deploy Pipeline
 
 ### 1. Local Training
 ```bash
@@ -252,7 +219,7 @@ python3 deploy_lambda_api.py
 python3 test_lambda_api.py
 ```
 
-## Configuration (Important)
+## Configuration 
 
 ### AWS Configuration
 
@@ -288,21 +255,6 @@ AWS_REGION = "your-region"
 - **S3 Bucket** to store artifacts
 - **IAM Permissions** to create Lambda roles
 
-## Retraining
-
-To retrain the model:
-
-```bash
-python3 train_model.py
-```
-
-## Redeployment
-
-To redeploy the model:
-
-```bash
-python3 deploy.py
-```
 
 ## Project Management (Pause/Resume)
 
@@ -316,7 +268,7 @@ python3 manage_project.py status
 ```
 Displays the status of all resources (SageMaker, Lambda, API Gateway).
 
-#### Pause (savings)
+#### Pause
 ```bash
 python3 manage_project.py pause
 ```
@@ -339,9 +291,6 @@ python3 manage_project.py test
 Tests the deployed API with sample data.
 
 
-**Benefits:**
-- **Savings** : ~$0.50/hour when paused
-- **Speed** : Resume in 2-3 minutes
 
 ## Technical Deployment Details
 
@@ -379,68 +328,6 @@ The file `inference.py` contains:
 - **predict_fn()** : Prediction with normalization and scoring
 - **output_fn()** : JSON response formatting
 
-### Input Format
-```json
-[0.1, 0.2, -0.05, 0.15, ...]  // 50 numerical values
-```
+--
 
-### Output Format
-```json
-{
-  "prediction": 0,                    // 0 = non-bankrupt, 1 = bankrupt
-  "probability": {
-    "not_bankrupt": 0.95,            // Non-bankruptcy probability
-    "bankrupt": 0.05                 // Bankruptcy probability
-  },
-  "risk_level": "low"                // low, medium, high
-}
-```
-
-### SageMaker Compatibility
-- **Framework** : scikit-learn 1.0-1
-- **Python** : 3.8
-- **Instance** : ml.t2.medium
-- **Region** : eu-west-3
-- **Format** : JSON 
-
-
-
-## Cost Optimization
-
-### AWS Costs 
-
-**In operation:**
-- **SageMaker Endpoint** : ~$0.50/hour (ml.t2.medium)
-- **Lambda Function** : Free up to 1M requests/month
-- **API Gateway** : Free up to 1M requests/month
-- **Total** : ~$0.50/hour + usage
-
-**Paused (with `manage_project.py pause`):**
-- **SageMaker Endpoint** : $0 
-- **Lambda Function** : Free
-- **API Gateway** : Free
-- **Total** : $0 (savings of ~$360/month)
-
-## Use Cases
-
-- Company bankruptcy risk assessment
-- Investment decision support
-- Financial monitoring
-- Credit analysis
-- Demonstrations and presentations
-- Rapid ML application prototyping
-
-## Quick Demo (On Author Request)
-
-```bash
-
-# 4. Use the API
-curl -X POST https://sv6rnbh9mi.execute-api.eu-west-3.amazonaws.com/prod/predict \
-  -H 'Content-Type: application/json' \
-  -d '{"data": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]}'
-
-```
-
-**Status** : Production Ready  
-**Version** : 1.0.0  
-**Last update** : September 2025
+Personal project to understand AWS deployment and cost optimization
