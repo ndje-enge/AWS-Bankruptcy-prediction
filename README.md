@@ -1,6 +1,6 @@
 # Bankruptcy Prediction Model - AWS SageMaker Deployment
 
-Multi-Layer Perceptron Classifier model for Taiwanese company bankruptcy prediction deployed on AWS SageMaker + REST API.
+Multi-Layer Perceptron Classifier model for Taiwanese company bankruptcy prediction deployed on AWS SageMaker + REST API. Personal project to understand AWS deployment and cost optimization.
 
 
 ## Dataset
@@ -328,6 +328,4 @@ The file `inference.py` contains:
 - **predict_fn()** : Prediction with normalization and scoring
 - **output_fn()** : JSON response formatting
 
---
 
-Personal project to understand AWS deployment and cost optimization
